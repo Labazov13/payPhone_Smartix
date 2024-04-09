@@ -22,11 +22,10 @@ public class BalanceController {
         this.balanceProcessor = balanceProcessor;
     }
     @GetMapping(value = "/users/{username}")
-    public ResponseEntity<BigDecimal> getBalance(@PathVariable(name = "username") String username){
-        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public ResponseEntity<User> getBalance(@PathVariable(name = "username") String username){
         User user = userDAO.findByUsername(username);
         if (user != null){
-            return new ResponseEntity<>(user.getBalance(), HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
@@ -38,9 +37,9 @@ public class BalanceController {
         User userFrom = userDAO.findByUsername(username);
         boolean isChecked = balanceProcessor.checkBalance(userTo, amount, userFrom);
         if (isChecked){
-            userDAO.save(userTo);
-            userDAO.save(userFrom);
+            balanceProcessor.editBalance(userTo, amount, userFrom);
+            return new ResponseEntity<>("Status success!",HttpStatus.OK);
         }
-
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

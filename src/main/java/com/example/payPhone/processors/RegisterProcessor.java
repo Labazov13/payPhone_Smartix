@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 
 @Component
 public class RegisterProcessor {
@@ -22,14 +23,17 @@ public class RegisterProcessor {
         this.paymentHistoryDAO = paymentHistoryDAO;
     }
 
-    public boolean setDefaultSettings(User user){
-        if (user == null){
-            return false;
-        }
+    public User setDefaultSettings(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
         user.setBalance(new BigDecimal(1000));
-        paymentHistoryDAO.save(new PaymentHistory(LocalDate.now(), user.getPhone(), user.getBalance()));
-        return true;
+        return user;
+    }
+
+    public void savePayment(User user){
+        PaymentHistory paymentHistory = new PaymentHistory(LocalDate.now(), user.getUsername(), user.getBalance());
+        paymentHistory.setUser(user);
+        //user.getPaymentHistory().add(paymentHistory);
+        paymentHistoryDAO.save(paymentHistory);
     }
 }

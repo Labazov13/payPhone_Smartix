@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
@@ -15,28 +16,37 @@ import java.util.Set;
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "phone")
-    private String phone;
-    @Column(name = "password")
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+    @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "balance")
+    @Column(name = "balance", nullable = false)
     private BigDecimal balance;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Set<PaymentHistory> paymentHistory = new HashSet<>();
-    @Column(name = "roles")
+    @Column(name = "roles", nullable = false)
     private String roles;
-    @Column(name = "full_name")
+    @Column(name = "full_name", nullable = false)
     private String fullName;
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "gender")
+    @Column(name = "gender", nullable = false)
     private String gender;
-    @Column(name = "birth_day")
+    @Column(name = "birth_day", nullable = false)
     private Date birthDay;
+
+    public User(String username, String password, String fullName, String email, String gender, Date birthDay) {
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.gender = gender;
+        this.birthDay = birthDay;
+    }
 }
