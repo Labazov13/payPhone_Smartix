@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Date;
+
 @Data
 @Entity
 @ToString
@@ -21,18 +21,18 @@ public class PaymentHistory implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "paid_at", nullable = false)
-    private LocalDate paidAt;
+    private Date paidAt;
     @Column(name = "phone", nullable = false)
-    private String phone;
+    private String username;
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public PaymentHistory(LocalDate paidAt, String phone, BigDecimal amount) {
+    public PaymentHistory(Date paidAt, String username, BigDecimal amount) {
         this.paidAt = paidAt;
-        this.phone = phone;
+        this.username = username;
         this.amount = amount;
     }
 }

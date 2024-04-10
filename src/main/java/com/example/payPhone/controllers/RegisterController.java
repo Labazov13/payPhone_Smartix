@@ -13,20 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegisterController {
 
-    private final UserDAO userDAO;
     private final RegisterProcessor registerProcessor;
 
     @Autowired
-    public RegisterController(UserDAO userDAO, RegisterProcessor registerProcessor) {
-        this.userDAO = userDAO;
+    public RegisterController(RegisterProcessor registerProcessor) {
         this.registerProcessor = registerProcessor;
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<?> getRegister(@RequestBody User user) {
-        User fullUser = registerProcessor.setDefaultSettings(user);
-        userDAO.save(fullUser);
-        registerProcessor.savePayment(user);
-        return new ResponseEntity<>(fullUser, HttpStatus.OK);
+    public ResponseEntity<User> getRegister(@RequestBody User user) {
+        return ResponseEntity.ok().body(this.registerProcessor.setDefaultSettings(user));
     }
 }

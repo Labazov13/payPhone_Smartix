@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.math.BigDecimal;
 
 @RestController
@@ -21,16 +20,30 @@ public class BalanceController {
         this.userDAO = userDAO;
         this.balanceProcessor = balanceProcessor;
     }
+
+    /**
+     * This method assumes equal authority for all users of the application,
+     * so there is a restriction on viewing user information ONLY for the user who is currently authenticated
+     * @param username
+     * @return Class: ResponseEntity<?>
+     */
     @GetMapping(value = "/users/{username}")
-    public ResponseEntity<User> getBalance(@PathVariable(name = "username") String username){
-        User user = userDAO.findByUsername(username);
-        if (user != null){
-            return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<String> getBalance(@PathVariable(name = "username") String username){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (username.equals(auth.getName())){
+            User user = userDAO.findByUsername(username);
+            if (user != null){
+                return new ResponseEntity<>("User: " + user.getUsername() + ", Balance: " + user.getBalance(), HttpStatus.OK);
+            }
+            return new ResponseEntity<>("User is not found!", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .header("Access", "Access to someone else's account information is prohibited")
+                .build();
+
     }
     @PutMapping(value = "/payment")
-    public ResponseEntity<?> payment(@RequestParam(value = "username") String username,
+    public ResponseEntity<String> payment(@RequestParam(value = "username") String username,
                                      @RequestParam(value = "amount") BigDecimal amount){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User userTo = userDAO.findByUsername(auth.getName());
@@ -38,8 +51,8 @@ public class BalanceController {
         boolean isChecked = balanceProcessor.checkBalance(userTo, amount, userFrom);
         if (isChecked){
             balanceProcessor.editBalance(userTo, amount, userFrom);
-            return new ResponseEntity<>("Status success!",HttpStatus.OK);
+            return new ResponseEntity<>("The payment was successful!",HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Oops! Something went wrong!", HttpStatus.NOT_FOUND);
     }
 }

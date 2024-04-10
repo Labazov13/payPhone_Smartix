@@ -2,6 +2,7 @@ package com.example.payPhone.enttities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,9 +14,10 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "users")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User implements Serializable {
     @Id
     @Column(name = "id")
@@ -25,28 +27,24 @@ public class User implements Serializable {
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "balance", nullable = false)
+    @Column(name = "balance")
     private BigDecimal balance;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Set<PaymentHistory> paymentHistory = new HashSet<>();
-    @Column(name = "roles", nullable = false)
+    @Column(name = "roles")
     private String roles;
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender")
     private String gender;
-    @Column(name = "birth_day", nullable = false)
+    @Column(name = "birth_day")
     private Date birthDay;
 
-    public User(String username, String password, String fullName, String email, String gender, Date birthDay) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.gender = gender;
-        this.birthDay = birthDay;
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Component
 public class BalanceProcessor {
@@ -29,13 +31,10 @@ public class BalanceProcessor {
         BigDecimal balanceFrom = userFrom.getBalance().add(amount);
         userTo.setBalance(balanceTo);
         userFrom.setBalance(balanceFrom);
-        PaymentHistory paymentHistoryUserTo = new PaymentHistory(LocalDate.now(), userTo.getUsername(), balanceTo);
+        PaymentHistory paymentHistoryUserTo = new PaymentHistory(new Date(), userTo.getUsername(), amount);
         paymentHistoryUserTo.setUser(userTo);
-        PaymentHistory paymentHistoryUserFrom = new PaymentHistory(LocalDate.now(), userFrom.getUsername(), balanceFrom);
-        paymentHistoryUserFrom.setUser(userFrom);
         userDAO.save(userTo);
         paymentHistoryDAO.save(paymentHistoryUserTo);
         userDAO.save(userFrom);
-        paymentHistoryDAO.save(paymentHistoryUserFrom);
     }
 }

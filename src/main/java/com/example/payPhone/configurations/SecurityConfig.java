@@ -42,7 +42,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/payment").authenticated()
-                        .requestMatchers("/users/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/edit").authenticated()
+                        .requestMatchers("/users/**", "/history", "/short-history").authenticated()
                         .requestMatchers( "/login").permitAll())
                 .formLogin(AbstractAuthenticationFilterConfigurer::permitAll);
         return http.build();
