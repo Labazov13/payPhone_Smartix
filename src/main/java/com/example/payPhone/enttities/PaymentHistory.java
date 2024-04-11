@@ -35,4 +35,11 @@ public class PaymentHistory implements Serializable {
         this.username = username;
         this.amount = amount;
     }
+
+    public PaymentHistory(Date paidAt, String username, BigDecimal amount, User user) {
+        this.paidAt = paidAt;
+        this.username = username;
+        this.amount = amount;
+        this.user = user;
+    }
 }

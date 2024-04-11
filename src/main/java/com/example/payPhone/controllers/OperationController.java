@@ -34,7 +34,7 @@ public class OperationController {
                                                                   @PageableDefault(sort = {"username"}, direction = Sort.Direction.DESC)
                                                                   Pageable pageable) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (username.equals(auth.getName())) {
+        if (auth != null && auth.getName() != null && username.equals(auth.getName())) {
             return ResponseEntity.ok().body(this.paymentHistoryDAO.findByUsername(username, pageable));
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN)

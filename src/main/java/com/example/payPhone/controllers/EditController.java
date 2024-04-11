@@ -35,11 +35,16 @@ public class EditController {
             user.setEmail(email);
             user.setGender(gender);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                user.setBirthDay(dateFormat.parse(birthDay));
-            } catch (ParseException e) {
-                return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
-                        .header("error", "Incorrect Input Date!").build();
+            if (birthDay != null){
+                try {
+                    user.setBirthDay(dateFormat.parse(birthDay));
+                } catch (ParseException e) {
+                    return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                            .header("error", "Incorrect Input Date!").build();
+                }
+            }
+            else {
+                user.setBirthDay(null);
             }
             userDAO.save(user);
             return new ResponseEntity<>("Data changed successfully!", HttpStatus.OK);

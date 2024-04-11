@@ -35,11 +35,10 @@ public class BalanceController {
             if (user != null){
                 return new ResponseEntity<>("User: " + user.getUsername() + ", Balance: " + user.getBalance(), HttpStatus.OK);
             }
-            return new ResponseEntity<>("User is not found!", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).header("Error", "User is not found!").build();
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .header("Access", "Access to someone else's account information is prohibited")
-                .build();
+                .body("Access to someone else's account information is prohibited");
 
     }
     @PutMapping(value = "/payment")

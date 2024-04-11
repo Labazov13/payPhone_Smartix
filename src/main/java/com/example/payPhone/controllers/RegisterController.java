@@ -1,10 +1,8 @@
 package com.example.payPhone.controllers;
 
-import com.example.payPhone.dao.UserDAO;
 import com.example.payPhone.enttities.User;
 import com.example.payPhone.processors.RegisterProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
