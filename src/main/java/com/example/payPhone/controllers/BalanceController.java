@@ -50,8 +50,8 @@ public class BalanceController {
         boolean isChecked = balanceProcessor.checkBalance(userTo, amount, userFrom);
         if (isChecked){
             balanceProcessor.editBalance(userTo, amount, userFrom);
-            return new ResponseEntity<>("The payment was successful!",HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body("The payment was successful!");
         }
-        return new ResponseEntity<>("Oops! Something went wrong!", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Oops! Something went wrong! Your balance: " + userTo.getBalance(), HttpStatus.NOT_FOUND);
     }
 }

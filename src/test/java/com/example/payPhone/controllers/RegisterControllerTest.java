@@ -3,6 +3,7 @@ package com.example.payPhone.controllers;
 import com.example.payPhone.dao.UserDAO;
 import com.example.payPhone.enttities.User;
 import com.example.payPhone.processors.RegisterProcessor;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,6 +29,7 @@ class RegisterControllerTest {
 
 
     @Test
+    @DisplayName("This test simulates the process of successful user registration")
     void getRegister_ReturnResponseEntityWithHttpStatusOK() throws Exception {
         RegisterController registerController = new RegisterController(registerProcessor);
         User user  = new User("username", "password");

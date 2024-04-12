@@ -71,6 +71,7 @@ class OperationControllerTest {
 
     @Test
     @WithMockUser(username = "testuser")
+    @DisplayName("This test checks the status OK returned by the controller method OperationController")
     void getShortPaymentHistory_ReturnCorrectResponseEntityWithHttpStatusOK() throws Exception {
         PaymentHistory paymentHistory = new PaymentHistory(new Date(), "testuser",
                 BigDecimal.TEN, new User("username", "password"));
@@ -87,6 +88,7 @@ class OperationControllerTest {
 
     @Test
     @WithMockUser(username = "testuser")
+    @DisplayName("This test checks the status FORBIDDEN returned by the controller method OperationController")
     void getShortPaymentHistory_ReturnIncorrectResponseEntityWithHttpStatusFORBIDDEN() throws Exception {
         PaymentHistory paymentHistory = new PaymentHistory(new Date(), "testuser",
                 BigDecimal.TEN, new User("username", "password"));
